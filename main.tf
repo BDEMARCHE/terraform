@@ -1,21 +1,19 @@
 terraform {
-  required_version = ">= 1.1.7"
 
+  required_version = ">= 1.1.0"
   required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "3.57.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 3.24.1"
     }
     fakewebservices = "~> 0.1"
   }
-
-  backend "remote" {
-    organization = "{{ORGANIZATION_NAME}}"
+  cloud {
+    organization = "<ORGANIZATION_NAME>"
     workspaces {
-      name = "{{WORKSPACE_NAME}}"
+      name = "Example-Workspace"
     }
   }
-
 }
 
 variable "provider_token" {
