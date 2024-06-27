@@ -12,7 +12,7 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 3.75.0"
-    },
+    }
     fakewebservices = "~> 0.1"
   }
 }
