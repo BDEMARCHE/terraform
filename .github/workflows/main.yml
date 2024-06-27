@@ -26,3 +26,8 @@ jobs:
           terraformHost: 'app.terraform.io'
           isDestroy: false
           message: 'GitHub Actions'
+
+      - name: using HashiCorp
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
