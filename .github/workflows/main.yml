@@ -25,11 +25,21 @@ jobs:
 #            echo "    message: GitHub Actions"
 #            echo "  env:"
 #            echo "    ORGANIZATION: ${{ env.ORGANIZATION }}"
-            
+
+      - name: get terraform details and not capture output
+        uses: sarathkrish/invoke-terraform-run-api@v1.0
+        with:
+          workSpaceName: "terraform"
+          organizationName: ${{ env.ORGANIZATION }}
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
+          terraformHost: "app.terraform.io"
+          isDestroy: false
+          message: 'GitHub Actions'
+          
       - name: Run Terraform API Command and Capture Output
         id: run-terraform-api
         run: |
-          echo "sarathkrish/invoke-terraform-run-api@v1.0 \
+          echo "uses: sarathkrish/invoke-terraform-run-api@v1.0 \
               --workSpaceName terraform \
               --organizationName ${{ env.ORGANIZATION }} \
               --terraformToken ${{ secrets.TERRAFORM_TOKEN }} \
