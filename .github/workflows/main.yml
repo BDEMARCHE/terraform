@@ -15,11 +15,12 @@ jobs:
       - name: Run Hello World script
         run: echo "Hello,world!"
 
+      - name: Starting Terraform
         uses: sarathkrish/invoke-terraform-run-api@v1.0   
-with:  
-  workSpaceName: MyTestWorkspace  
-  organizationName: {{env.organization}}  
-  terraformToken: {{secrets.Terraform_Token}}
-  terraformHost: 'app.terraform.io'
-  isDestroy: false
-  message: 'GitHub Actions'
+        with:  
+          workSpaceName: MyTestWorkspace  
+          organizationName: ${{ env.organization }}  
+          terraformToken: ${{ secrets.Terraform_Token }}
+          terraformHost: 'app.terraform.io'
+          isDestroy: false
+          message: 'GitHub Actions'
