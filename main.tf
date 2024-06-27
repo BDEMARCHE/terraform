@@ -2,6 +2,13 @@ terraform {
   required_version = ">= 1.1.7"
 
 
+  cloud {
+    organization = "M2I"
+    workspaces {
+      name = "terraform"
+    }
+  }
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
