@@ -1,0 +1,25 @@
+name: Terraform CI
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Run Hello World script
+        run: echo "Hello,world!"
+
+        uses: sarathkrish/invoke-terraform-run-api@v1.0   
+with:  
+  workSpaceName: MyTestWorkspace  
+  organizationName: {{env.organization}}  
+  terraformToken: {{secrets.Terraform_Token}}
+  terraformHost: 'app.terraform.io'
+  isDestroy: false
+  message: 'GitHub Actions'
