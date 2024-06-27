@@ -9,9 +9,9 @@ terraform {
     fakewebservices = "~> 0.1"
   }
   cloud {
-    organization = "<ORGANIZATION_NAME>"
+    organization = "M2I"
     workspaces {
-      name = "Example-Workspace"
+      name = "terraform"
     }
   }
 }
