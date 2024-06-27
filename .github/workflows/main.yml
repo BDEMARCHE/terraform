@@ -29,13 +29,13 @@ jobs:
       - name: Run Terraform API Command and Capture Output
         id: run-terraform-api
         run: |
-          sarathkrish/invoke-terraform-run-api@v1.0 \
+          echo "sarathkrish/invoke-terraform-run-api@v1.0 \
               --workSpaceName terraform \
               --organizationName ${{ env.ORGANIZATION }} \
               --terraformToken ${{ secrets.TERRAFORM_TOKEN }} \
               --terraformHost app.terraform.io \
               --isDestroy false \
-              --message 'GitHub Actions'
+              --message 'GitHub Actions'"
            | > output.log
           
       - name: Upload Terraform API Command Output
