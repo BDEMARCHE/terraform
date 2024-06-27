@@ -10,9 +10,9 @@ terraform {
   }
 
   backend "remote" {
-    organization = "M2I"
+    organization = {{ORGANIZATION_NAME}}
     workspaces {
-      name = "pterraform"
+      name = "{{WORKSPACE_NAME}}"
     }
   }
 
