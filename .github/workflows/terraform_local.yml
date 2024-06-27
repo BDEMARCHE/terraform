@@ -22,7 +22,10 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
-
+      
+    - name: terraform workspace show
+      run: terraform workspace show
+        
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
