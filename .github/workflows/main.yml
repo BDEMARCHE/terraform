@@ -19,7 +19,7 @@ jobs:
         uses: sarathkrish/invoke-terraform-run-api@v1.0   
         with:  
           workSpaceName: terraform
-          organizationName: 'M2I'
+          organizationName: ${{ env.ORGANIZATION }}
           terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
           terraformHost: 'app.terraform.io'
           isDestroy: false
