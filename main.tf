@@ -1,21 +1,21 @@
 terraform {
   required_version = ">= 1.1.7"
 
-
-  cloud {
-    organization = "M2I"
-    workspaces {
-      name = "terraform"
-    }
-  }
-
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.75.0"
+    google = {
+      source  = "hashicorp/google"
+      version = "3.57.0"
     }
     fakewebservices = "~> 0.1"
   }
+
+  backend "remote" {
+    organization = "M2I"
+    workspaces {
+      name = "pterraform"
+    }
+  }
+
 }
 
 variable "provider_token" {
