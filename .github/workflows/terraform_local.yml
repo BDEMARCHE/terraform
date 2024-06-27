@@ -9,8 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
-    - uses: hashicorp/setup-terraform@v3
+    - name: starting by checkout
+      uses: actions/checkout@v4
+
+    - name: GET ID Terraform app.terraform.io
+      uses: sarathkrish/invoke-terraform-run-api@v1.0   
+      with:  
+        workSpaceName: terraform
+        organizationName: ${{ env.ORGANIZATION }}
+        terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
+        terraformHost: 'app.terraform.io'
+        isDestroy: false
+        message: 'GitHub Actions'
+          
+    - name: Using hashicoorp terraform
+      uses: hashicorp/setup-terraform@v3
       with:
         cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
 
