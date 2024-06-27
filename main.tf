@@ -21,6 +21,7 @@ terraform {
 variable "provider_token" {
   type      = string
   sensitive = true
+  default = "lLXMHxKH45OyqQ.atlasv1.0nJ3lBkloRy4m7s85UzawiKeMDJt4YLL6BKrXfMXNdyNz2KkYshfvLR5jY0rVhEdAI4"
 }
 
 provider "fakewebservices" {
