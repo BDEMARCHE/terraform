@@ -23,7 +23,7 @@ variable "provider_token" {
 }
 
 provider "fakewebservices" {
-  token = ${{ secrets.PROVIDER_TOKEN_FAKEWEBSERVICES }}
+  token = "pLh5b4Fl4LzOyw.atlasv1.BDbSL7T8vCrDe8t0EEwxHXL7kU2Tjerkdonvi2hAduzHNNlLzKa4pyuhIEgYHWGaxnE"
 }
 
 resource "fakewebservices_vpc" "primary_vpc" {
