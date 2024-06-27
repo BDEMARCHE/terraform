@@ -39,38 +39,38 @@ jobs:
             echo "$run_output"
           } 2>&1 | tee output.log
           
-    - name: Upload Terraform API Command Output
-      uses: actions/upload-artifact@v3
-      with:
-        name: terraform-api-output
-        path: output.log
-
-    - name: Using hashicoorp terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
-
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
-
-    - name: Terraform Init
-      id: init
-      run: terraform init
-      
-    - name: terraform workspace show
-      run: terraform workspace show
+      - name: Upload Terraform API Command Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-api-output
+          path: output.log
+  
+      - name: Using hashicoorp terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
+          
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+  
+      - name: Terraform Init
+        id: init
+        run: terraform init
         
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: false
+      - name: terraform workspace show
+        run: terraform workspace show
+          
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+  
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: false
       
-    - name: Terraform Apply
-      id: apply
-      run: terraform apply -auto-approve
+ #     - name: Terraform Apply
+ #       id: apply
+ #       run: terraform apply -auto-approve
