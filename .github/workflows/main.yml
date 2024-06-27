@@ -12,19 +12,39 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: starting by checkout
-      uses: actions/checkout@v4
-
-    - name: GET ID Terraform app.terraform.io
-      uses: sarathkrish/invoke-terraform-run-api@v1.0   
-      with:  
-        workSpaceName: terraform
-        organizationName: ${{ env.ORGANIZATION }}
-        terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
-        terraformHost: 'app.terraform.io'
-        isDestroy: false
-        message: 'GitHub Actions'
+      - name: starting by checkout
+        uses: actions/checkout@v4
+        
+      - name: Run Terraform API Command and Capture Output
+        id: run-terraform-api
+        run: |
+          {
+            echo "Run sarathkrish/invoke-terraform-run-api@v1.0"
+            echo "  with:"
+            echo "    workSpaceName: terraform"
+            echo "    organizationName: ${{ env.ORGANIZATION }}"
+            echo "    terraformToken: ***"
+            echo "    terraformHost: app.terraform.io"
+            echo "    isDestroy: false"
+            echo "    message: GitHub Actions"
+            echo "  env:"
+            echo "    ORGANIZATION: ${{ env.ORGANIZATION }}"
+            run_output=$(sarathkrish/invoke-terraform-run-api@v1.0 \
+              --workSpaceName terraform \
+              --organizationName ${{ env.ORGANIZATION }} \
+              --terraformToken ${{ secrets.TERRAFORM_TOKEN }} \
+              --terraformHost app.terraform.io \
+              --isDestroy false \
+              --message 'GitHub Actions')
+            echo "$run_output"
+          } 2>&1 | tee output.log
           
+    - name: Upload Terraform API Command Output
+      uses: actions/upload-artifact@v3
+      with:
+        name: terraform-api-output
+        path: output.log
+
     - name: Using hashicoorp terraform
       uses: hashicorp/setup-terraform@v3
       with:
