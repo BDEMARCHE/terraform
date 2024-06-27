@@ -1,0 +1,2 @@
+ORGANIZATION_NAME = "M2I"
+WORKSPACE_NAME = "terraform"
