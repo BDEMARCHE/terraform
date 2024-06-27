@@ -18,8 +18,8 @@ jobs:
       - name: Starting Terraform
         uses: sarathkrish/invoke-terraform-run-api@v1.0   
         with:  
-          workSpaceName: MyTestWorkspace  
-          organizationName: ${{ env.organization }}  
+          workSpaceName: terraform
+          organizationName: ${{ env.organization }}
           terraformToken: ${{ secrets.Terraform_Token }}
           terraformHost: 'app.terraform.io'
           isDestroy: false
