@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+env:
+  ORGANIZATION: "M2I"
   
 jobs:
   build:
@@ -19,7 +21,7 @@ jobs:
         uses: sarathkrish/invoke-terraform-run-api@v1.0   
         with:  
           workSpaceName: terraform
-          organizationName: ${{ vars.ORGANIZATION }}
+          organizationName: ${{ env.ORGANIZATION }}
           terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
           terraformHost: 'app.terraform.io'
           isDestroy: false
