@@ -1,4 +1,4 @@
-name: Terraform CI
+FOname: Terraform CI
 on:
   push:
     branches:
@@ -19,8 +19,8 @@ jobs:
         uses: sarathkrish/invoke-terraform-run-api@v1.0   
         with:  
           workSpaceName: terraform
-          organizationName: ${{ env.organization }}
-          terraformToken: ${{ secrets.Terraform_Token }}
+          organizationName: ${{ env.ORGANIZATION }}
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
           terraformHost: 'app.terraform.io'
           isDestroy: false
           message: 'GitHub Actions'
