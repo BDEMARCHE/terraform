@@ -12,8 +12,13 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 3.75.0"
-    }
+    },
+    fakewebservices = "~> 0.1"
   }
+}
+
+provider "fakewebservices" {
+  token = var.provider_token
 }
 
 resource "fakewebservices_vpc" "primary_vpc" {
