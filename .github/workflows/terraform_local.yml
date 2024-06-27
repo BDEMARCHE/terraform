@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-
+      
+env:
+  ORGANIZATION: "M2I"
+  
 jobs:
   build:
     runs-on: ubuntu-latest
