@@ -43,8 +43,11 @@ jobs:
         run: |
            WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://${{ env.TERRAFORM_CLOUD }}/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/${{ env.TERRAFORM_WORKSPACE }} 2>/dev/null))
            WORKSPACE_ID=($(echo $WORKSPACE_ID_T |jq -r '.data.id'))
+           echo '{"data":{"type":"configuration-versions","attributes": {"auto-queue-runs": false }}}' > ./create_config_version.json
+           UPLOAD_URL=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" --request POST --data @create_config_version.json https://${{ env.TERRAFORM_CLOUD }}/api/v2/workspaces/$WORKSPACE_ID/configuration-versions 2>/dev/null))
            echo "GITHUBOUTPUT=$GITHUB_OUTPUT" >> $GITHUB_OUTPUT
            echo "WORKSPACE_ID=$WORKSPACE_ID" >> $GITHUB_OUTPUT
+           echo $UPLOAD_URL
   #
   # on recupere le fichier GITHUB_OUTPUT dans un autre Job ( noter le <needs> )
   # et on va creer un artifact
