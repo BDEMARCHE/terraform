@@ -17,31 +17,28 @@ jobs:
 
   job2:
     runs-on: ubuntu-latest
+    outputs:
+      tfout: ${{ steps.stepgetoutput.outputs }}
     steps:
-        - name: get terraform details and not capture output
-          uses: sarathkrish/invoke-terraform-run-api@v1.0
-          with:
-            workSpaceName: "terraform"
-            organizationName: ${{ env.ORGANIZATION }}
-            terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
-            terraformHost: "app.terraform.io"
-            isDestroy: false
-            message: 'GitHub Actions'
+      - id : stepgetoutput
+        name: get terraform details and not capture output
+        uses: sarathkrish/invoke-terraform-run-api@v1.0
+        with:
+          workSpaceName: "terraform"
+          organizationName: ${{ env.ORGANIZATION }}
+          terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
+          terraformHost: "app.terraform.io"
+          isDestroy: false
+          message: 'GitHub Actions'
 
   job3:
     runs-on: ubuntu-latest
     needs: job2
     steps:
-      - id: terraform-api-output
-        name: Run Terraform API Command and Capture Output to GITHUB_OUTPUT
-        run: echo "${{ jobs.job2.outputs }}" 
-#   job33:
-#     runs-on: ubuntu-latest
-#     needs: job3
-#     steps:
-#       - env:
-#           MYJSON: ${{ needs.job3.outputs.terraformdisplay }}
-#         run: "echo $MYJSON"
+        - name: Run Terraform API Command and Capture Output to GITHUB_OUTPUT
+          env:
+            MYJSON: ${{ needs.job2.outputs.tfout }}
+          run: "echo $MYJSON"
 #  job4: 
 #    runs-on: ubuntu-latest
 #    needs: job3
