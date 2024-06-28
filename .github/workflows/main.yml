@@ -55,8 +55,8 @@ jobs:
     steps:
        - name: Run Terraform API Command and Capture Output
          env:
-           MYWKSID: ${{ needs.job3.outputs.tfwks_id }}
-           MYGOF: ${{ needs.job3.outputs.tf_gitout_file }}
+           MYWKSID: ${{ needs.workspace_id.outputs.tfwks_id }}
+           MYGOF: ${{ needs.workspace_id.outputs.tf_gitout_file }}
          run: echo "$MYWKSID" > output.log
 
        - name: Upload Terraform API Command Output
