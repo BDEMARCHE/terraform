@@ -18,7 +18,7 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     outputs:
-      tfout: ${{ steps.stepgetoutput.outputs }}
+      tfout: ${{ steps.stepgetoutput.outputs.test }}
     steps:
       - id : stepgetoutput
         name: get terraform details and not capture output
