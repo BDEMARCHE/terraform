@@ -31,19 +31,17 @@ jobs:
   job3:
     runs-on: ubuntu-latest
     needs: job2
-    outputs:
-      terraformdisplay: ${{ steps.terraform-api-output.outputs.test }}
     steps:
       - id: terraform-api-output
         name: Run Terraform API Command and Capture Output to GITHUB_OUTPUT
-        run: echo "test=${{ needs.job3.outputs.terraformdisplay }}" >> "$GITHUB_OUTPUT"
-  job33:
-    runs-on: ubuntu-latest
-    needs: job3
-    steps:
-      - env:
-          MYJSON: ${{ needs.job3.outputs.terraformdisplay }}
-        run: "echo $MYJSON"
+        run: echo "${{ jobs.job2.outputs }}" 
+#   job33:
+#     runs-on: ubuntu-latest
+#     needs: job3
+#     steps:
+#       - env:
+#           MYJSON: ${{ needs.job3.outputs.terraformdisplay }}
+#         run: "echo $MYJSON"
 #  job4: 
 #    runs-on: ubuntu-latest
 #    needs: job3
