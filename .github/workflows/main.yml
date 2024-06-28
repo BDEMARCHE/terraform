@@ -38,7 +38,7 @@ jobs:
       - id: terraform-api-output
         name: Run Terraform API Command and Capture Output
         env:
-          MYJSON: ${{ needs.job2.outputs.terraformdisplay }}
+          MYJSON: ${{ needs.job2.outputs.terraformdisplay.test }}
         run: echo "$MYJSON" > output.log
 #  job4: 
 #    runs-on: ubuntu-latest
