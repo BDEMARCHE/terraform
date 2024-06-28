@@ -31,15 +31,15 @@ jobs:
   job3:
     runs-on: ubuntu-latest
     outputs:
-      tfout: ${{ steps.stepgetoutput.outputs.WORKSPACE_ID }}
+      tfwks_id: ${{ steps.stepgetoutput.outputs.WORKSPACE_ID }}
+      tf_gitout_file: ${{ steps.stepgetoutput.outputs.GITHUBOUTPUT }}
     steps:
       - id : stepgetoutput
         name: Get Worspace ID and store it to GITHUB_OUTPUT
         run: |
            WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/terraform 2>/dev/null))
            WORKSPACE_ID=($(echo $WORKSPACE_ID_T |jq -r '.data.id'))
-           echo "$WORKSPACE_ID_T"
-           echo "GITHUB_OUTPUT=$GITHUB_OUTPUT" 
+           echo "GITHUBOUTPUT=$GITHUB_OUTPUT" >> $GITHUB_OUTPUT
            echo "WORKSPACE_ID=$WORKSPACE_ID" >> $GITHUB_OUTPUT
     
   job4:
@@ -48,17 +48,18 @@ jobs:
     steps:
         - name: Run Terraform API Command and Capture Output
           env:
-            MYJSON: ${{ needs.job3.outputs.tfout }}
-          run: "echo $MYJSON"
-#  job4: 
-#    runs-on: ubuntu-latest
-#    needs: job3
-#    steps:
-#      - name: Upload Terraform API Command Output
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: terraform-api-output
-#          path: output.log
+            MYWKSID: ${{ needs.job3.outputs.tfwks_id }}
+            MYGOF: ${{ needs.job3.outputs.tf_gitout_file }}
+          run: echo "$MYWKSID" > output.log
+  job5: 
+    runs-on: ubuntu-latest
+    needs: job4
+    steps:
+      - name: Upload Terraform API Command Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-api-output
+          path: output.log
 #          
 #  job5: 
 #    runs-on: ubuntu-latest
