@@ -39,7 +39,7 @@ jobs:
       - id: terraform-api-output
       - env:
           MYJSON: ${{ needs.job2.outputs.terraformdisplay }}
-          run: echo "$MYJSON" > output.log
+        run: echo "$MYJSON" > output.log
   job4: 
     runs-on: ubuntu-latest
     needs: job3
