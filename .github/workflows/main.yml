@@ -30,6 +30,7 @@ jobs:
           terraformHost: "app.terraform.io"
           isDestroy: false
           message: 'GitHub Actions'
+        run: echo "test=${{ needs.job2.outputs.tfout }}" >> "$GITHUB_OUTPUT"
 
   job3:
     runs-on: ubuntu-latest
