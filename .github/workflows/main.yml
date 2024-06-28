@@ -21,7 +21,7 @@ jobs:
       terraformdisplay: ${{ steps.setpdisplay.outputs.test }}
     steps:
       - id: stepdisplay
-      - name: get terraform details and not capture output
+        name: get terraform details and not capture output
         uses: sarathkrish/invoke-terraform-run-api@v1.0
         with:
           workSpaceName: "terraform"
