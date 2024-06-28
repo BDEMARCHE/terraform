@@ -46,20 +46,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: job3
     steps:
-        - name: Run Terraform API Command and Capture Output
-          env:
-            MYWKSID: ${{ needs.job3.outputs.tfwks_id }}
-            MYGOF: ${{ needs.job3.outputs.tf_gitout_file }}
-          run: echo "$MYWKSID" > output.log
-  job5: 
-    runs-on: ubuntu-latest
-    needs: job4
-    steps:
-      - name: Upload Terraform API Command Output
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-api-output
-          path: output.log
+       - name: Run Terraform API Command and Capture Output
+         env:
+           MYWKSID: ${{ needs.job3.outputs.tfwks_id }}
+           MYGOF: ${{ needs.job3.outputs.tf_gitout_file }}
+         run: echo "$MYWKSID" > output.log
+
+       - name: Upload Terraform API Command Output
+         uses: actions/upload-artifact@v3
+         with:
+           name: terraform-api-output
+           path: output.log
 #          
 #  job5: 
 #    runs-on: ubuntu-latest
