@@ -7,6 +7,8 @@ on:
       
 env:
   ORGANIZATION: "M2I"
+  TERRAFORM_CLOUD: "app.terraform.io"
+  TERRAFORM_WORKSPACE: "terraform"
   
 jobs:
   job1:
@@ -14,20 +16,26 @@ jobs:
     steps:
       - name: starting by checkout
         uses: actions/checkout@v4
-
+#
+# je garde cet exemple
+#
   job2:
     runs-on: ubuntu-latest
     steps:
         - name: get terraform details and not capture output
           uses: sarathkrish/invoke-terraform-run-api@v1.0
           with:
-            workSpaceName: "terraform"
+            workSpaceName: ${{ env.TERRAFORM_WORKSPACE }}
             organizationName: ${{ env.ORGANIZATION }}
             terraformToken: ${{ secrets.TERRAFORM_TOKEN }}
-            terraformHost: "app.terraform.io"
+            terraformHost: ${{ env.TERRAFORM_CLOUD }}
             isDestroy: false
             message: 'GitHub Actions'
-
+#
+# lancement commande vers Terraform pour obtention du workspace id
+# creation des outputs specifiques tfwks_id & tf_gitout_file
+# stockage via GITHUB OUTPUT pour pouvoir recuperer ses valeurs dans un autre Job ( histoire de...)
+#
   job3:
     runs-on: ubuntu-latest
     outputs:
@@ -37,11 +45,14 @@ jobs:
       - id : stepgetoutput
         name: Get Worspace ID and store it to GITHUB_OUTPUT
         run: |
-           WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/terraform 2>/dev/null))
+           WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://${{ env.TERRAFORM_CLOUD }}/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/${{ env.TERRAFORM_WORKSPACE }} 2>/dev/null))
            WORKSPACE_ID=($(echo $WORKSPACE_ID_T |jq -r '.data.id'))
            echo "GITHUBOUTPUT=$GITHUB_OUTPUT" >> $GITHUB_OUTPUT
            echo "WORKSPACE_ID=$WORKSPACE_ID" >> $GITHUB_OUTPUT
-    
+  #
+  # on recupere le fichier GITHUB_OUTPUT dans un autre Job ( noter le <needs> )
+  # et on va creer un artifact
+  #
   job4:
     runs-on: ubuntu-latest
     needs: job3
@@ -57,37 +68,39 @@ jobs:
          with:
            name: terraform-api-output
            path: output.log
-#          
-#  job5: 
-#    runs-on: ubuntu-latest
-#    needs: job1
-#    steps:
-#      - name: Using hashicoorp terraform
-#        uses: hashicorp/setup-terraform@v3
-#        with:
-#          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
-#          
-#      - name: Terraform fmt
-#        id: fmt
-#        run: terraform fmt -check
-#        continue-on-error: true
-#  
-#      - name: Terraform Init
-#        id: init
-#        run: terraform init
-#        
-#      - name: terraform workspace show
-#        run: terraform workspace show
-#          
-#      - name: Terraform Validate
-#        id: validate
-#        run: terraform validate -no-color
-#  
-#      - name: Terraform Plan
-#        id: plan
-#        run: terraform plan -no-color
-#        continue-on-error: false
-#      
+  #
+  # Lancement Terraform
+  #
+  job5: 
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - name: Using hashicoorp terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
+          
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+  
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: terraform workspace show
+        run: terraform workspace show
+          
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+  
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: false
+      
  #     - name: Terraform Apply
  #       id: apply
  #       run: terraform apply -auto-approve
