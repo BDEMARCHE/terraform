@@ -11,15 +11,11 @@ env:
   TERRAFORM_WORKSPACE: "terraform"
   
 jobs:
-  job1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: starting by checkout
-        uses: actions/checkout@v4
+
 #
 # je garde cet exemple
 #
-  job2:
+  sarathkrish:
     runs-on: ubuntu-latest
     steps:
         - name: get terraform details and not capture output
@@ -36,7 +32,7 @@ jobs:
 # creation des outputs specifiques tfwks_id & tf_gitout_file
 # stockage via GITHUB OUTPUT pour pouvoir recuperer ses valeurs dans un autre Job ( histoire de...)
 #
-  job3:
+  workspace_id:
     runs-on: ubuntu-latest
     outputs:
       tfwks_id: ${{ steps.stepgetoutput.outputs.WORKSPACE_ID }}
@@ -53,9 +49,9 @@ jobs:
   # on recupere le fichier GITHUB_OUTPUT dans un autre Job ( noter le <needs> )
   # et on va creer un artifact
   #
-  job4:
+  artifact_workspace_id:
     runs-on: ubuntu-latest
-    needs: job3
+    needs: workspace_id
     steps:
        - name: Run Terraform API Command and Capture Output
          env:
@@ -71,10 +67,12 @@ jobs:
   #
   # Lancement Terraform
   #
-  job5: 
+  Terraform: 
     runs-on: ubuntu-latest
-    needs: job1
     steps:
+      - name: starting by checkout
+        uses: actions/checkout@v4
+        
       - name: Using hashicoorp terraform
         uses: hashicorp/setup-terraform@v3
         with:
