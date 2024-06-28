@@ -18,7 +18,7 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     outputs:
-      terraformdisplay: ${{ steps.setpdisplay.output.test }}
+      terraformdisplay: ${{ steps.setpdisplay.outputs.test }}
     steps:
       - id: stepdisplay
       - name: get terraform details and not capture output
@@ -31,39 +31,12 @@ jobs:
           isDestroy: false
           message: 'GitHub Actions'
 
-#            echo "Run sarathkrish/invoke-terraform-run-api@v1.0"
-#            echo "  with:"
-#            echo "    workSpaceName: terraform"
-#            echo "    organizationName: ${{ env.ORGANIZATION }}"
-#            echo "    terraformToken: ***"
-#            echo "    terraformHost: app.terraform.io"
-#            echo "    isDestroy: false"
-#            echo "    message: GitHub Actions"
-#            echo "  env:"
-#            echo "    ORGANIZATION: ${{ env.ORGANIZATION }}"
-#  job3:
-#    runs-on: ubuntu-latest
-#    
-#    steps:
-#      - name: Run Terraform API Command and Capture Output
-#        id: run-terraform-api
-#        run: |
-#          {
-#            run_output=$(uses: sarathkrish/invoke-terraform-run-api@v1.0 \
-#              --workSpaceName terraform \
-#              --organizationName ${{ env.ORGANIZATION }} \
-#              --terraformToken ${{ secrets.TERRAFORM_TOKEN }} \
-#              --terraformHost app.terraform.io \
-#              --isDestroy false \
-#              --message 'GitHub Actions')
-#            echo "$run_output"
-#          } 2>&1 | tee output.log
   job3:
     runs-on: ubuntu-latest
     needs: job2
     steps:
       - name: Run Terraform API Command and Capture Output
-        id: terraform-api-output
+      - id: terraform-api-output
       - env:
           MYJSON: ${{ needs.job2.outputs.terraformdisplay }}
           run: echo "$MYJSON" > output.log
@@ -79,6 +52,7 @@ jobs:
           
   job5: 
     runs-on: ubuntu-latest
+    needs: job1
     steps:
       - name: Using hashicoorp terraform
         uses: hashicorp/setup-terraform@v3
