@@ -36,7 +36,7 @@ jobs:
       - id : stepgetoutput
         name: Get Worspace ID and store it to GITHUB_OUTPUT
         run: |
-           WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/terraform))
+           WORKSPACE_ID_T=($(curl -k --header "Authorization: Bearer ${{ secrets.TERRAFORM_TOKEN }}" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/organizations/${{ env.ORGANIZATION }}/workspaces/terraform >/dev/null))
            WORKSPACE_ID=($(echo $WORKSPACE_ID_T |jq -r '.data.id'))
            echo "WORKSPACE_ID=$WORKSPACE_ID" >> $GITHUB_OUTPUT
     
